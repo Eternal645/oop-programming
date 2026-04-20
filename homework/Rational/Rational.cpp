@@ -1,93 +1,121 @@
-﻿#include "rational.h"
+#include "rational.h"
 #include <cmath>
-#include <iostream>
-#include <locale.h>
 
-using namespace std;
-
-void Rational::reduce()
+void Rational::simplify()
 {
     if (denom < 0)
     {
         numer = -numer;
         denom = -denom;
     }
-
-    int a = std::abs(numer);
-    int b = std::abs(denom);
-
-    while (b != 0)
+    for (int i = 2; i <= abs(denom) && i <= abs(numer); i++)
     {
-        int t = b;
-        b = a % b;
-        a = t;
-    }
-
-    if (a > 1)
-    {
-        numer /= a;
-        denom /= a;
+        if (numer % i == 0 && denom % i == 0)
+        {
+            numer /= i;
+            denom /= i;
+            i--;
+        }
     }
 }
 
-Rational::Rational() : numer(0), denom(1) {}
-
-Rational::Rational(int n) : numer(n), denom(1) {}
-
-Rational::Rational(int n, int d) : numer(n), denom(d)
+Rational::Rational()
 {
-    reduce();
+    numer = 0;
+    denom = 1;
 }
 
-Rational Rational::operator-() const
+Rational::Rational(int number)
 {
-    return Rational(-numer, denom);
+    numer = number;
+    denom = 1;
 }
 
-Rational &Rational::operator+=(const Rational &r)
+Rational::Rational(int n, int d)
 {
-    numer = numer * r.denom + r.numer * denom;
-    denom = denom * r.denom;
-    reduce();
+    numer = n;
+    denom = d;
+    simplify();
+}
+
+Rational& Rational::operator +=(const Rational& r)
+{
+    numer = (numer * r.denom + denom * r.numer);
+    denom *= r.denom;
+    simplify();
     return *this;
 }
 
-Rational &Rational::operator-=(const Rational &r)
+Rational Rational::operator +(const Rational& r) const
 {
-    return *this += -r;
+    Rational res(*this);
+    return res += r;
 }
 
-Rational Rational::operator+(const Rational &r) const
+Rational Rational::operator -() const
 {
-    Rational tmp(*this);
-    return tmp += r;
+    Rational r(-numer, denom);
+    return r;
 }
 
-Rational Rational::operator-(const Rational &r) const
+Rational& Rational::operator -=(const Rational& r)
 {
-    Rational tmp(*this);
-    return tmp -= r;
+    return (*this += (-r));
 }
 
-Rational &Rational::operator++()
+Rational Rational::operator -(const Rational& r) const
+{
+    Rational res(*this);
+    return res -= r;
+}
+
+Rational& Rational::operator *=(const Rational& r)
+{
+    numer *= r.numer;
+    denom *= r.denom;
+    simplify();
+    return *this;
+}
+
+Rational Rational::operator *(const Rational& r) const
+{
+    Rational res(*this);
+    return res *= r;
+}
+
+Rational& Rational::operator /=(const Rational& r)
+{
+    numer *= r.denom;
+    denom *= r.numer;
+    simplify();
+    return *this;
+}
+
+Rational Rational::operator /(const Rational& r) const
+{
+    Rational res(*this);
+    return res /= r;
+}
+
+Rational& Rational::operator ++()
 {
     numer += denom;
     return *this;
 }
 
-Rational Rational::operator++(int)
+Rational Rational::operator ++(int)
 {
-    Rational tmp(*this);
+    Rational r(*this);
     numer += denom;
-    return tmp;
+    return r;
 }
 
-bool Rational::operator==(const Rational &r) const
+bool Rational::operator ==(const Rational& r) const
 {
-    return numer == r.numer && denom == r.denom;
+    return (numer == r.numer) && (denom == r.denom);
 }
 
-bool Rational::operator!=(const Rational &r) const
+bool Rational::operator !=(const Rational& r) const
 {
     return !(*this == r);
 }
@@ -99,48 +127,18 @@ Rational::operator int() const
 
 Rational::operator double() const
 {
-    return (double)numer / denom;
+    return ((double)numer) / denom;
 }
 
-std::istream &operator>>(std::istream &in, Rational &r)
+istream& operator >>(istream& in, Rational& r)
 {
     in >> r.numer >> r.denom;
-    r.reduce();
+    r.simplify();
     return in;
 }
 
-std::ostream &operator<<(std::ostream &out, const Rational &r)
+ostream& operator <<(ostream& out, const Rational& r)
 {
     out << r.numer << "/" << r.denom;
     return out;
-}
-
-int main()
-{
-    setlocale(LC_ALL, "Russian");
-    Rational a(1, 2), b(-1, 6);
-    cout << "a = " << a << ", b = " << b << endl;
-
-    cout << "a + b = " << a + b << endl;
-    cout << "a - b = " << a - b << endl;
-
-    Rational c = a;
-    c += b;
-    cout << "a += b => " << c << endl;
-
-    cout << "++a = " << ++a << endl;
-    cout << "a++ = " << a++ << ", после: a = " << a << endl;
-
-    cout << "a == b: " << (a == b ? "true" : "false") << endl;
-    cout << "a != b: " << (a != b ? "true" : "false") << endl;
-
-    cout << "a как double = " << (double)a << endl;
-    cout << "a как int    = " << (int)a << endl;
-
-    Rational g;
-    cout << "Введите дробь (числитель знаменатель): ";
-    cin >> g;
-    cout << "Вы ввели: " << g << endl;
-
-    return 0;
 }

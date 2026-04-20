@@ -1,36 +1,48 @@
-#pragma once
-#include <cmath>
+#ifndef RATIONAL_H
+#define RATIONAL_H
+
 #include <iostream>
+using namespace std;
 
 class Rational
 {
+    // Числитель
     int numer;
+    // Знаменатель (>=1)
     int denom;
 
-    void reduce();
+    void simplify();
 
 public:
+
     Rational();
-    Rational(int n);
+    Rational(int number);
     Rational(int n, int d);
 
-    Rational operator-() const;
+    Rational& operator +=(const Rational& r);
+    Rational  operator +(const Rational& r) const;
 
-    Rational &operator+=(const Rational &r);
-    Rational &operator-=(const Rational &r);
+    Rational  operator -() const;
+    Rational& operator -=(const Rational& r);
+    Rational  operator -(const Rational& r) const;
 
-    Rational operator+(const Rational &r) const;
-    Rational operator-(const Rational &r) const;
+    Rational& operator *=(const Rational& r);
+    Rational  operator *(const Rational& r) const;
 
-    Rational &operator++();
-    Rational operator++(int);
+    Rational& operator /=(const Rational& r);
+    Rational  operator /(const Rational& r) const;
 
-    bool operator==(const Rational &r) const;
-    bool operator!=(const Rational &r) const;
+    Rational& operator ++();       // префикс
+    Rational  operator ++(int);    // постфикс
+
+    bool operator ==(const Rational& r) const;
+    bool operator !=(const Rational& r) const;
 
     operator int() const;
     operator double() const;
 
-    friend std::istream &operator>>(std::istream &in, Rational &r);
-    friend std::ostream &operator<<(std::ostream &out, const Rational &r);
+    friend istream& operator >>(istream& in, Rational& r);
+    friend ostream& operator <<(ostream& out, const Rational& r);
 };
+
+#endif
