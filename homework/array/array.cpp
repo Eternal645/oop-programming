@@ -1,6 +1,6 @@
 #include "array.h"
 
-// Конструктор
+// конструктор
 Array::Array(int startCapacity)
 {
     if (startCapacity <= 0)
@@ -12,13 +12,13 @@ Array::Array(int startCapacity)
     size = 0;
 }
 
-// Деструктор
+// деструктор
 Array::~Array()
 {
     delete[] ptr;
 }
 
-// Конструктор копирования
+// конструктор копирования
 Array::Array(const Array& arr)
 {
     ptr = new int[arr.capacity];
@@ -28,7 +28,7 @@ Array::Array(const Array& arr)
         ptr[i] = arr.ptr[i];
 }
 
-// Оператор присваивания
+// оператор присваивания
 Array& Array::operator=(const Array& arr)
 {
     if (this == &arr)
@@ -48,7 +48,7 @@ Array& Array::operator=(const Array& arr)
     return *this;
 }
 
-// Оператор индексации (чтение и запись)
+// оператор индексации
 int& Array::operator[](int index)
 {
     if (index >= size || index < 0)
@@ -57,7 +57,7 @@ int& Array::operator[](int index)
         return ptr[index];
 }
 
-// Оператор индексации (только чтение)
+// оператор индексации
 int Array::operator[](int index) const
 {
     if (index >= size || index < 0)
@@ -66,7 +66,7 @@ int Array::operator[](int index) const
         return ptr[index];
 }
 
-// Закрытая функция увеличения предельного размера
+// закрытая функция увеличения предельного размера
 void Array::increaseCapacity(int newCapacity)
 {
     capacity = newCapacity < capacity * 2 ?
@@ -80,7 +80,7 @@ void Array::increaseCapacity(int newCapacity)
     ptr = newPtr;
 }
 
-// Вставка элемента по индексу
+// вставка элемента по индексу
 void Array::insert(int elem, int index)
 {
     if (index < 0 || index > size)
@@ -89,7 +89,6 @@ void Array::insert(int elem, int index)
     if (size == capacity)
         increaseCapacity(size + 1);
 
-    // Если index == size, цикл не выполнится ни разу
     for (int j = size - 1; j >= index; j--)
         ptr[j + 1] = ptr[j];
 
@@ -97,13 +96,13 @@ void Array::insert(int elem, int index)
     ptr[index] = elem;
 }
 
-// Вставка элемента в конец
+// вставка элемента в конец
 void Array::insert(int elem)
 {
     insert(elem, size);
 }
 
-// Удаление элемента по индексу
+// удаление элемента по индексу
 void Array::remove(int index)
 {
     if (index < 0 || index >= size)
@@ -116,13 +115,12 @@ void Array::remove(int index)
     size--;
 }
 
-// Получение размера
+// получение размера
 int Array::getSize() const
 {
     return size;
 }
 
-// Вывод в поток
 ostream& operator<<(ostream& out, const Array& arr)
 {
     out << "Total size: " << arr.size << endl;
