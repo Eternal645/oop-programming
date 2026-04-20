@@ -32,8 +32,8 @@ public:
     Rational& operator /=(const Rational& r);
     Rational  operator /(const Rational& r) const;
 
-    Rational& operator ++();       // префикс
-    Rational  operator ++(int);    // постфикс
+    Rational& operator ++();
+    Rational  operator ++(int);
 
     bool operator ==(const Rational& r) const;
     bool operator !=(const Rational& r) const;
