@@ -1,7 +1,6 @@
 #include "Graph.h"
 #include <set>
 
-// ---- Node ----
 
 void Node::addNeighbour(Node* neighbour) {
     neighbours.insert(neighbour);
@@ -11,7 +10,6 @@ void Node::removeNeighbour(Node* neighbour) {
     neighbours.erase(neighbour);
 }
 
-// ---- Graph ----
 
 void Graph::addNode(Node* node) {
     nodes.insert(node);
@@ -19,7 +17,6 @@ void Graph::addNode(Node* node) {
 
 void Graph::removeNode(Node* node) {
     nodes.erase(node);
-    // Remove also from all neighbours lists
     for (std::set<Node*>::iterator it = nodes.begin();
          it != nodes.end(); it++) {
         (*it)->removeNeighbour(node);
