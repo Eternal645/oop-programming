@@ -1,9 +1,6 @@
 #include <iostream>
 #include "Graph.h"
 
-// BFS и DFS объявлены в Graph.cpp, повторим здесь для main
-// (в реальном проекте их стоит вынести в отдельный заголовок)
-
 #include <queue>
 #include <set>
 
@@ -50,7 +47,6 @@ public:
 };
 
 int main() {
-    // Граф из лекции: вершины 0-5
     Node n0("0"), n1("1"), n2("2"), n3("3"), n4("4"), n5("5");
 
     Graph g;
@@ -80,7 +76,6 @@ int main() {
     std::cout << "DFS: 0 -> 5 connected? "
               << (dfs.connected(&n0, &n5) ? "yes" : "no") << std::endl;
 
-    // Путь из лекции: (0, 3, 4, 5)
     std::cout << "BFS: 0 -> 2 connected? "
               << (bfs.connected(&n0, &n2) ? "yes" : "no") << std::endl;
     std::cout << "DFS: 0 -> 2 connected? "
