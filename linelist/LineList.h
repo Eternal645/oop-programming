@@ -25,14 +25,13 @@ public:
     LineListElem(const T& adata, LineListElem* anext);
     const T& getData() const;
     LineListElem* getNext();
-    // В объявлениях друзей template повторяется
     template <class U> friend class LineList;
 };
 
 // Шаблон для линейного списка
 template <class T> class LineList {
     LineListElem<T>* start; // Начало списка
-    LineList(const LineList& list); // Зачем?
+    LineList(const LineList& list);
     LineList& operator =(const LineList& list);
 public:
     LineList();
@@ -46,7 +45,7 @@ public:
 };
 
 
-// Методы LineListElem – определения
+// Методы LineListElem - определения
 
 template <class T> LineListElem<T>::LineListElem(
     const T& adata, LineListElem<T>* anext)
