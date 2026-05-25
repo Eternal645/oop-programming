@@ -2,13 +2,13 @@
 #include <iostream>
 #include <cmath>
 
-// ===== Точка =====
+// Точка 
 struct Point {
     double x, y;
     Point(double x = 0, double y = 0) : x(x), y(y) {}
 };
 
-// ===== Абстрактный базовый класс =====
+// Абстрактный базовый класс
 class Shape {
 public:
     virtual ~Shape() {}
@@ -17,7 +17,7 @@ public:
     virtual void   name()          = 0;
 };
 
-// ===== Круг =====
+// Круг
 class Circle : public Shape {
     Point  center;
     double r;
@@ -31,7 +31,7 @@ public:
     void   name()          override;
 };
 
-// ===== Эллипс =====
+// Эллипс
 class Ellipse : public Shape {
     Point  center;
     double a, b;
@@ -45,8 +45,7 @@ public:
     void   name()          override;
 };
 
-// ===== Треугольник =====
-// Задаётся вершинами (Point / координаты) или тремя сторонами
+// Треугольник
 class Triangle : public Shape {
     Point p[3];
 public:
@@ -59,8 +58,7 @@ public:
     void   name()          override;
 };
 
-// ===== Прямоугольник =====
-// Задаётся четырьмя вершинами (Point / координаты) или двумя сторонами
+// Прямоугольник
 class Rectangle : public Shape {
     Point p[4];
 public:
@@ -75,7 +73,7 @@ public:
     void   name()          override;
 };
 
-// ===== Многоугольник =====
+// Многоугольник
 static const int POLY_MAX = 2048;
 
 class Polygon : public Shape {
@@ -85,13 +83,11 @@ public:
 
     Polygon();
     Polygon(const Point* pts, int n);
-    explicit Polygon(const char* filename);  // читает вершины из файла
+    explicit Polygon(const char* filename);
     double calc_area()     override;
     double calc_perimetr() override;
     void   name()          override;
 };
-
-// ===== ASCII-детектирование фигур =====
 
 static const int GRID_ROWS = 205;
 static const int GRID_COLS = 205;
