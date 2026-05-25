@@ -83,6 +83,35 @@ void Graph::addEdge(int source, int target) {
     }
 }
 
+void Graph::removeEdge(int source, int target) {
+    if (nodes.find(source) != nodes.end()) {
+        std::vector<int>& neighbors = nodes[source].neighbors;
+        for (int i = 0; i < (int)neighbors.size(); i++) {
+            if (neighbors[i] == target) {
+                neighbors.erase(neighbors.begin() + i);
+                break;
+            }
+        }
+    }
+    if (nodes.find(target) != nodes.end()) {
+        std::vector<int>& neighbors = nodes[target].neighbors;
+        for (int i = 0; i < (int)neighbors.size(); i++) {
+            if (neighbors[i] == source) {
+                neighbors.erase(neighbors.begin() + i);
+                break;
+            }
+        }
+    }
+}
+ 
+void Graph::removeNode(int id) {
+    if (nodes.find(id) == nodes.end()) return;
+    for (int neighbor : nodes[id].neighbors) {
+        removeEdge(id, neighbor);
+    }
+    nodes.erase(id);
+}
+
 // BFS обход из заданной вершины, возвращает список посещённых вершин
 std::vector<int> Graph::BFS(int start_id) {
     std::vector<int> visited_order;
