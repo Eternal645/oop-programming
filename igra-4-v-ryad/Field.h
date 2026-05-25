@@ -16,26 +16,26 @@ enum Cell
 class Field
 {
 public:
-    // Конструктор: isRedFirst — начинает ли красный
+    // Конструктор isRedFirst - начинает ли красный
     Field(bool isRedFirst);
 
-    // Очистка / перезапуск игры
+    // перезапуск игры
     void clear(bool isRedFirst);
 
-    // Сделать ход в колонку column (1..FIELD_WIDTH).
-    // Возвращает true, если ход допустим.
+    // Сделать ход в колонку column
+    // Возвращает true, если ход допустим
     bool makeTurn(int column);
 
-    // Закончилась ли игра (победа или ничья)?
+    // Проверка(закончилась ли игра)
     bool isOver() const;
 
-    // Выиграл ли красный / желтый?
+    // Выиграл ли красный/желтый
     bool isWon(bool red) const;
 
     // Получить содержимое ячейки [i][j]
     Cell getCell(int i, int j) const;
 
-    // Чья сейчас очередь?
+    // Чья сейчас очередь
     bool isRedTurnNow() const;
 
     // Напечатать поле в консоль
@@ -45,9 +45,9 @@ public:
     void printResult() const;
 
 private:
-    Cell cells[FIELD_WIDTH][FIELD_HEIGHT]; // [col][row], row=0 — дно
-    bool isRedTurn;                        // true — ходит красный
-    Cell winner;                           // EMPTY пока никто не выиграл
+    Cell cells[FIELD_WIDTH][FIELD_HEIGHT];
+    bool isRedTurn;                        
+    Cell winner;                           
 
     // Проверить, появился ли победитель после последнего хода
     void checkWinner();
