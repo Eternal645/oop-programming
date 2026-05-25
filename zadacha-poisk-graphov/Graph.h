@@ -24,6 +24,8 @@ struct Graph {
 
     void addNode(int id);
     void addEdge(int source, int target);
+    void removeNode(int id);
+    void removeEdge(int source, int target);
 
     std::vector<int> BFS(int start_id);
     void findAndSaveDisconnectedGraphs(const std::string& output_prefix);
