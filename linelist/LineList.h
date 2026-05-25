@@ -4,7 +4,6 @@
 using namespace std;
 
 // Шаблон функции поиска максимума
-// Здесь T обозначает какой-либо тип
 template <class T> const T& getMax(const T& a, const T& b)
 {
     return a > b ? a : b;
@@ -46,7 +45,6 @@ public:
 
 
 // Методы LineListElem - определения
-
 template <class T> LineListElem<T>::LineListElem(
     const T& adata, LineListElem<T>* anext)
 {
@@ -67,7 +65,6 @@ LineListElem<T>* LineListElem<T>::getNext()
 }
 
 // Конструктор и деструктор
-
 template <class T> LineList<T>::LineList()
 {
     start = 0;
