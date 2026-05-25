@@ -2,26 +2,18 @@
 #include <iostream>
 using namespace std;
 
-// ─────────────────────────────────────────────────────────────
-// Направления для поиска победной серии:
-//   горизонталь, вертикаль, две диагонали
-// ─────────────────────────────────────────────────────────────
 static const int DIR_NUMBER = 4;
 static const int di[] = { 1,  0,  1, 1 };
 static const int dj[] = { 0,  1, -1, 1 };
 static const int WIN_LENGTH = 4;
 
-// ─────────────────────────────────────────────────────────────
 // Конструктор
-// ─────────────────────────────────────────────────────────────
 Field::Field(bool isRedFirst)
 {
     clear(isRedFirst);
 }
 
-// ─────────────────────────────────────────────────────────────
 // Очистка поля
-// ─────────────────────────────────────────────────────────────
 void Field::clear(bool isRedFirst)
 {
     isRedTurn = isRedFirst;
@@ -31,24 +23,22 @@ void Field::clear(bool isRedFirst)
             cells[i][j] = EMPTY;
 }
 
-// ─────────────────────────────────────────────────────────────
-// Выполнить ход в колонку column (1-based)
-// ─────────────────────────────────────────────────────────────
+// Выполнить ход в колонку column
 bool Field::makeTurn(int column)
 {
     // Игра уже завершена или номер колонки вне диапазона
     if (winner != EMPTY || column < 1 || column > FIELD_WIDTH)
         return false;
 
-    int i = column - 1;          // переводим в 0-based индекс
+    int i = column - 1;
 
-    // Ищем первую свободную ячейку снизу (j=0 — дно)
+    // Ищем первую свободную ячейку снизу (j=0 - дно)
     for (int j = 0; j < FIELD_HEIGHT; j++)
     {
         if (cells[i][j] == EMPTY)
         {
             cells[i][j] = isRedTurn ? RED : YELLOW;
-            checkWinner();           // появился ли победитель?
+            checkWinner();           // появился ли победитель
             isRedTurn = !isRedTurn;
             return true;
         }
@@ -57,9 +47,7 @@ bool Field::makeTurn(int column)
     return false;
 }
 
-// ─────────────────────────────────────────────────────────────
 // Проверить победителя после последнего хода
-// ─────────────────────────────────────────────────────────────
 void Field::checkWinner()
 {
     for (int i = 0; i < FIELD_WIDTH; i++)
@@ -97,15 +85,13 @@ void Field::checkWinner()
     }
 }
 
-// ─────────────────────────────────────────────────────────────
 // Закончилась ли игра?
-// ─────────────────────────────────────────────────────────────
 bool Field::isOver() const
 {
     if (winner != EMPTY)
         return true;
 
-    // Если хотя бы одна ячейка свободна — игра продолжается
+    // Если хотя бы одна ячейка свободна - игра продолжается
     for (int i = 0; i < FIELD_WIDTH; i++)
         for (int j = 0; j < FIELD_HEIGHT; j++)
             if (cells[i][j] == EMPTY)
@@ -114,7 +100,6 @@ bool Field::isOver() const
     return true; // все ячейки заняты, ничья
 }
 
-// ─────────────────────────────────────────────────────────────
 bool Field::isWon(bool red) const
 {
     return winner == (red ? RED : YELLOW);
@@ -130,9 +115,7 @@ bool Field::isRedTurnNow() const
     return isRedTurn;
 }
 
-// ─────────────────────────────────────────────────────────────
 // Печать поля
-// ─────────────────────────────────────────────────────────────
 void Field::print() const
 {
     cout << endl;
@@ -142,7 +125,7 @@ void Field::print() const
         cout << " " << i;
     cout << endl;
 
-    // Строки поля (сверху вниз: j от FIELD_HEIGHT-1 до 0)
+    // Строки поля
     for (int j = FIELD_HEIGHT - 1; j >= 0; j--)
     {
         cout << "|";
@@ -165,9 +148,7 @@ void Field::print() const
     cout << "-" << endl;
 }
 
-// ─────────────────────────────────────────────────────────────
 // Печать результата
-// ─────────────────────────────────────────────────────────────
 void Field::printResult() const
 {
     print();
