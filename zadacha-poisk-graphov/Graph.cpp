@@ -3,10 +3,27 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <algorithm>
+
+static bool vectorContainsInt(const std::vector<int>& v, int val) {
+    for (int x : v) if (x == val) return true;
+    return false;
+}
+
+static bool vectorContainsStr(const std::vector<std::string>& v, const std::string& val) {
+    for (const std::string& s : v) if (s == val) return true;
+    return false;
+}
+
+static void sortVector(std::vector<int>& v) {
+    for (int i = 0; i < (int)v.size(); i++)
+        for (int j = i + 1; j < (int)v.size(); j++)
+            if (v[j] < v[i]) { int tmp = v[i]; v[i] = v[j]; v[j] = tmp; }
+}
+
+static int minInt(int a, int b) { return a < b ? a : b; }
+static int maxInt(int a, int b) { return a > b ? a : b; }
 
 // Node
-
 Node::Node() : id(-1) {}
 
 Node::Node(int id) : id(id) {}
@@ -71,11 +88,11 @@ std::vector<int> Graph::BFS(int start_id) {
     std::vector<int> visited_order;
     if (nodes.find(start_id) == nodes.end()) return visited_order;
 
-    std::unordered_set<int> visited;
+    std::vector<int> visited;
     std::queue<int> q;
 
     q.push(start_id);
-    visited.insert(start_id);
+    visited.push_back(start_id);
 
     while (!q.empty()) {
         int current = q.front();
@@ -83,8 +100,8 @@ std::vector<int> Graph::BFS(int start_id) {
         visited_order.push_back(current);
 
         for (int neighbor : nodes[current].neighbors) {
-            if (visited.find(neighbor) == visited.end()) {
-                visited.insert(neighbor);
+            if (!vectorContainsInt(visited, neighbor)) {
+                visited.push_back(neighbor);
                 q.push(neighbor);
             }
         }
@@ -94,42 +111,40 @@ std::vector<int> Graph::BFS(int start_id) {
 }
 
 // Выделение непересекающихся подграфов через BFS
-// Каждый подграф записывается в отдельный файл
 void Graph::findAndSaveDisconnectedGraphs(const std::string& output_prefix) {
-    std::unordered_set<int> all_visited;
+    std::vector<int> all_visited;
     int component_index = 0;
 
-    // Собрать все id вершин и отсортировать для детерминированного порядка
+    // Собрать все id вершин
     std::vector<int> all_ids;
     for (auto& pair : nodes) {
         all_ids.push_back(pair.first);
     }
-    std::sort(all_ids.begin(), all_ids.end());
 
     for (int start_id : all_ids) {
-        if (all_visited.find(start_id) != all_visited.end()) continue;
+        if (vectorContainsInt(all_visited, start_id)) continue;
 
         // BFS для данной компоненты связности
-        std::unordered_set<int> component_set;
+        std::vector<int> component;
         std::queue<int> q;
         q.push(start_id);
-        component_set.insert(start_id);
+        component.push_back(start_id);
 
         while (!q.empty()) {
             int current = q.front();
             q.pop();
 
             for (int neighbor : nodes[current].neighbors) {
-                if (component_set.find(neighbor) == component_set.end()) {
-                    component_set.insert(neighbor);
+                if (!vectorContainsInt(component, neighbor)) {
+                    component.push_back(neighbor);
                     q.push(neighbor);
                 }
             }
         }
 
         // Отметить вершины как посещённые
-        for (int id : component_set) {
-            all_visited.insert(id);
+        for (int id : component) {
+            all_visited.push_back(id);
         }
 
         // Записать рёбра компоненты в файл
@@ -142,18 +157,16 @@ void Graph::findAndSaveDisconnectedGraphs(const std::string& output_prefix) {
 
         out << "Source\tTarget\n";
 
-        std::unordered_set<std::string> written_edges;
-        std::vector<int> sorted_component(component_set.begin(), component_set.end());
-        std::sort(sorted_component.begin(), sorted_component.end());
+        std::vector<std::string> written_edges;
+        sortVector(component);
 
-        for (int node_id : sorted_component) {
+        for (int node_id : component) {
             for (int neighbor : nodes[node_id].neighbors) {
-                // Записывать каждое ребро один раз
-                int a = std::min(node_id, neighbor);
-                int b = std::max(node_id, neighbor);
+                int a = minInt(node_id, neighbor);
+                int b = maxInt(node_id, neighbor);
                 std::string edge_key = std::to_string(a) + "_" + std::to_string(b);
-                if (written_edges.find(edge_key) == written_edges.end()) {
-                    written_edges.insert(edge_key);
+                if (!vectorContainsStr(written_edges, edge_key)) {
+                    written_edges.push_back(edge_key);
                     out << a << "\t" << b << "\n";
                 }
             }
@@ -161,7 +174,7 @@ void Graph::findAndSaveDisconnectedGraphs(const std::string& output_prefix) {
 
         out.close();
         std::cout << "Компонента " << component_index
-                  << ": " << component_set.size() << " вершин -> " << filename << std::endl;
+                  << ": " << component.size() << " вершин -> " << filename << std::endl;
         component_index++;
     }
 
