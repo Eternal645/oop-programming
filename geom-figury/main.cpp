@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
     const char* outputFile   = (argc >= 3) ? argv[2] : "output.dat";
     const char* granitsyFile = (argc >= 4) ? argv[3] : "granitsy-uchastka2.txt";
 
-    // ── Демонстрация иерархии классов ──────────────────────────────
+    // Демонстрация иерархии классов
     cout << "=== Тест классов ===\n";
 
 
@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
         delete list[i];
     }
 
-    // ── Многоугольник из файла ──────────────────────────────────────
+    // Многоугольник из файла
     cout << "=== Площадь участка (" << granitsyFile << ") ===\n";
     Polygon poly(granitsyFile);
     if (poly.nv >= 3) {
@@ -64,7 +64,7 @@ int main(int argc, char* argv[]) {
         cout << "  Файл не найден или содержит менее 3 вершин.\n\n";
     }
 
-    // ── Обработка ASCII-сетки ───────────────────────────────────────
+    // Обработка ASCII-сетки
     cout << "=== Обработка файла: " << inputFile << " ===\n";
     static char grid[GRID_ROWS][GRID_COLS];
     int rows = readGrid(inputFile, grid);
