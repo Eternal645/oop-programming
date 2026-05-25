@@ -1,8 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <unordered_map>
-#include <unordered_set>
+#include <map>
 #include <queue>
 #include <string>
 
@@ -18,7 +17,7 @@ struct Node {
 };
 
 struct Graph {
-    std::unordered_map<int, Node> nodes;
+    std::map<int, Node> nodes;
 
     Graph();
     Graph(char* file_name);
