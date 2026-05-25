@@ -1,12 +1,12 @@
 #include <iostream>
+#include <locale.h>
 #include "Field.h"
 
 using namespace std;
 
 int main()
 {
-    // Для корректного вывода кириллицы на Windows раскомментируйте:
-    // setlocale(LC_ALL, "Russian");
+    setlocale(LC_ALL, "Russian");
 
     Field field(true); // красный ходит первым
 
