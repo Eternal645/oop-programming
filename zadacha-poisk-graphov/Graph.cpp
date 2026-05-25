@@ -5,7 +5,7 @@
 #include <sstream>
 #include <algorithm>
 
-// --- Node ---
+// Node
 
 Node::Node() : id(-1) {}
 
@@ -22,11 +22,11 @@ bool Node::hasNeighbor(int neighbor_id) const {
     return false;
 }
 
-// --- Graph ---
+// Graph
 
 Graph::Graph() {}
 
-// (II) Конструктор, формирующий граф из файла
+// Конструктор, формирующий граф из файла
 Graph::Graph(char* file_name) {
     std::ifstream file(file_name);
     if (!file.is_open()) {
@@ -35,7 +35,6 @@ Graph::Graph(char* file_name) {
     }
 
     std::string line;
-    // Пропустить заголовок
     std::getline(file, line);
 
     while (std::getline(file, line)) {
@@ -67,7 +66,7 @@ void Graph::addEdge(int source, int target) {
     }
 }
 
-// (III) BFS обход из заданной вершины, возвращает список посещённых вершин
+// BFS обход из заданной вершины, возвращает список посещённых вершин
 std::vector<int> Graph::BFS(int start_id) {
     std::vector<int> visited_order;
     if (nodes.find(start_id) == nodes.end()) return visited_order;
@@ -94,7 +93,7 @@ std::vector<int> Graph::BFS(int start_id) {
     return visited_order;
 }
 
-// (IV, V) Выделение непересекающихся подграфов через BFS
+// Выделение непересекающихся подграфов через BFS
 // Каждый подграф записывается в отдельный файл
 void Graph::findAndSaveDisconnectedGraphs(const std::string& output_prefix) {
     std::unordered_set<int> all_visited;
@@ -149,7 +148,7 @@ void Graph::findAndSaveDisconnectedGraphs(const std::string& output_prefix) {
 
         for (int node_id : sorted_component) {
             for (int neighbor : nodes[node_id].neighbors) {
-                // Записывать каждое ребро один раз (меньший id первым)
+                // Записывать каждое ребро один раз
                 int a = std::min(node_id, neighbor);
                 int b = std::max(node_id, neighbor);
                 std::string edge_key = std::to_string(a) + "_" + std::to_string(b);
