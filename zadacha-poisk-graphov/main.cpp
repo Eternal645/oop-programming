@@ -14,11 +14,11 @@ int main(int argc, char* argv[]) {
         output_prefix = argv[2];
     }
 
-    // (II) Формирование графа из файла
+    // Формирование графа из файла
     Graph g(file_name);
     std::cout << "Граф загружен: " << g.nodes.size() << " вершин" << std::endl;
 
-    // (III) Проверка корректности BFS
+    // Проверка корректности BFS
     if (!g.nodes.empty()) {
         int start_id = g.nodes.begin()->first;
         std::cout << "\nBFS из вершины " << start_id << ":" << std::endl;
@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
         std::cout << std::endl;
     }
 
-    // (IV, V) Выделение непересекающихся подграфов и запись в файлы
+    // Выделение непересекающихся подграфов и запись в файлы
     std::cout << "\nВыделение непересекающихся подграфов:" << std::endl;
     g.findAndSaveDisconnectedGraphs(output_prefix);
 
